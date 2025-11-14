@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반려동물 등록 - AI-PetCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐾 AI-PetCare</h1>
+            <nav>
+                <a href="index.html">홈</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="page-header">
+                <h2>반려동물 등록</h2>
+                <p>반려동물 정보를 입력해주세요</p>
+            </div>
+
+            <form id="petRegisterForm" class="form-container">
+                <div class="form-section">
+                    <h3>보호자 정보</h3>
+                    <div class="form-group">
+                        <label for="ownerName">이름 *</label>
+                        <input type="text" id="ownerName" name="ownerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerPhone">전화번호 *</label>
+                        <input type="tel" id="ownerPhone" name="ownerPhone" placeholder="010-1234-5678" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>반려동물 정보</h3>
+                    <div class="form-group">
+                        <label for="petImage">반려동물 사진</label>
+                        <div class="image-upload-container">
+                            <label for="petImage" class="image-upload-btn">
+                                <span>📷</span>
+                                <span>이미지 선택</span>
+                                <input type="file" id="petImage" name="petImage" accept="image/*" onchange="previewImage(this)">
+                            </label>
+                            <img id="imagePreview" class="image-preview hidden" alt="미리보기">
+                        </div>
+                        <small>JPG, PNG, GIF 형식의 이미지를 업로드할 수 있습니다.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="petName">이름 *</label>
+                        <input type="text" id="petName" name="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petType">종류 *</label>
+                        <select id="petType" name="petType" required>
+                            <option value="">선택하세요</option>
+                            <option value="dog">강아지</option>
+                            <option value="cat">고양이</option>
+                            <option value="other">기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ageYears">나이 (년) *</label>
+                        <input type="number" id="ageYears" name="ageYears" min="0" max="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="weightKg">몸무게 (kg) *</label>
+                        <input type="number" id="weightKg" name="weightKg" min="0" step="0.1" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>위치 정보</h3>
+                    <div class="form-group">
+                        <label for="locationCity">시/구 *</label>
+                        <input type="text" id="locationCity" name="locationCity" placeholder="서울특별시 강남구" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="locationCountry">국가</label>
+                        <input type="text" id="locationCountry" name="locationCountry" value="대한민국" readonly>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="location.href='index.html'">취소</button>
+                    <button type="submit" class="btn btn-primary">등록하기</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/pet-register.js"></script>
+</body>
+</html>
+
