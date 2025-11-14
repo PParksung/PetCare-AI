@@ -273,6 +273,7 @@ public class AIService {
                 prompt.append("\n");
             });
         }
+
         prompt.append("\n사용자 위치: ").append(userLocation).append("\n");
         prompt.append("\n사용 가능한 병원 목록 (총 ").append(hospitals.size()).append("개):\n");
         for (int i = 0; i < hospitals.size() && i < 15; i++) {
