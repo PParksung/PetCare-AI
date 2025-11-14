@@ -1,0 +1,76 @@
+# Java
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# 민감한 정보 - API 키 및 설정 파일
+backend/src/main/resources/application-local.properties
+backend/src/main/resources/application-dev.properties
+*.key
+*.pem
+*.p12
+
+# 데이터 파일 (개인 정보 포함 가능)
+backend/data/
+backend/uploads/
+
+# 로그 파일
+*.log
+logs/
+
+# 환경 변수 파일
+.env
+.env.local
+.env.*.local
+
+# 임시 파일
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Node modules (프론트엔드에서 사용하는 경우)
+node_modules/
+package-lock.json
+
+# 빌드 산출물
+dist/
+build/
+

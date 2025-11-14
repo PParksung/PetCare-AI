@@ -108,13 +108,13 @@ AI 기반 반려동물 건강 설문 분석 및 동물병원 추천·예약 웹 
    - 오른쪽 패널에서 `Environment variables` 섹션 찾기
    - `+` 버튼 클릭하여 테이블에 추가:
      - **Name**: `GEMINI_API_KEY` (정확히 이 이름, 대소문자 구분)
-     - **Value**: `AIzaSyACTHrxQnjLd5EOqimW3XdrD1CRcmjDpkM` (전체 키)
+     - **Value**: `발급받은-API-키-여기에-입력` (Google AI Studio에서 발급받은 키)
    - `Apply` → `OK` 클릭
    - ⚠️ **중요**: 백엔드 완전히 중지 후 재시작
 
 2. **IntelliJ에서 설정 (방법 B: 한 줄 입력)**
    - `Environment variables` 필드에 직접 입력:
-   - `GEMINI_API_KEY=AIzaSyACTHrxQnjLd5EOqimW3XdrD1CRcmjDpkM`
+   - `GEMINI_API_KEY=발급받은-API-키-여기에-입력`
    - ⚠️ 등호(`=`) 앞뒤에 **공백 없이** 입력
    - ⚠️ 키가 잘리지 않도록 전체를 입력
    - `Apply` → `OK` 클릭
@@ -122,7 +122,7 @@ AI 기반 반려동물 건강 설문 분석 및 동물병원 추천·예약 웹 
 
 3. **확인 방법**
    - 백엔드 재시작 후 콘솔 확인:
-   - `환경 변수 GEMINI_API_KEY: AIzaSyACTHrxQnjLd5E...` → 정상
+   - `환경 변수 GEMINI_API_KEY: AIza...` (키의 일부만 표시) → 정상
    - `환경 변수 GEMINI_API_KEY: null` → 환경 변수 미적용
 
 💡 **팁**: IntelliJ 환경 변수가 작동하지 않으면, 아래 "방법 2"를 사용하세요.
@@ -133,17 +133,17 @@ IntelliJ 환경 변수가 작동하지 않을 때 사용:
 
 `backend/src/main/resources/application.properties` 파일을 열고:
 ```properties
-ai.gemini.api.key=${GEMINI_API_KEY:AIzaSyACTHrxQnjLd5EOqimW3XdrD1CRcmjDpkM}
+ai.gemini.api.key=${GEMINI_API_KEY:your-gemini-api-key-here}
 ```
 
 이렇게 하면:
 - 환경 변수 `GEMINI_API_KEY`가 있으면 환경 변수 사용
-- 환경 변수가 없으면 기본값(위의 키) 사용
-- ⚠️ **주의**: Git에 커밋될 위험이 있으므로, `.gitignore`에 `application.properties`가 포함되어 있는지 확인하세요!
+- 환경 변수가 없으면 기본값 사용 (실제 키는 입력하지 마세요!)
+- ⚠️ **주의**: 실제 API 키는 절대 이 파일에 직접 입력하지 마세요! 환경 변수만 사용하세요!
 
 **방법 3: 터미널에서 설정 (Maven으로 실행하는 경우)**
 ```bash
-export GEMINI_API_KEY=AIzaSyACTHrxQnjLd5EOqimW3XdrD1CRcmjDpkM
+export GEMINI_API_KEY=발급받은-API-키-여기에-입력
 cd backend
 mvn spring-boot:run
 ```
