@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예약하기 - AI-PetCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐾 AI-PetCare</h1>
+            <nav>
+                <a href="index.html">홈</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="page-header">
+                <h2>예약하기</h2>
+            </div>
+
+            <form id="reservationForm" class="form-container">
+                <div class="form-section">
+                    <h3>예약 정보</h3>
+                    <div class="form-group">
+                        <label for="reservationPetId">반려동물 *</label>
+                        <select id="reservationPetId" name="petId" required>
+                            <option value="">선택하세요</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationDate">예약 날짜 *</label>
+                        <input type="date" id="reservationDate" name="reservationDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationTime">예약 시간 *</label>
+                        <input type="time" id="reservationTime" name="reservationTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationNotes">특이사항</label>
+                        <textarea id="reservationNotes" name="notes" rows="3" 
+                                  placeholder="예약 시 참고할 사항을 입력해주세요"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>보호자 정보</h3>
+                    <div class="form-group">
+                        <label for="reservationOwnerName">이름 *</label>
+                        <input type="text" id="reservationOwnerName" name="ownerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservationOwnerPhone">전화번호 *</label>
+                        <input type="tel" id="reservationOwnerPhone" name="ownerPhone" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+                    <button type="submit" class="btn btn-primary">예약 완료</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/reservation.js"></script>
+</body>
+</html>
+

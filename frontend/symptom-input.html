@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>증상 입력 - AI-PetCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐾 AI-PetCare</h1>
+            <nav>
+                <a href="index.html">홈</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="page-header">
+                <h2>증상 입력</h2>
+                <p>반려동물의 증상을 자세히 입력해주세요</p>
+            </div>
+
+            <form id="symptomForm" class="form-container">
+                <div class="form-section">
+                    <h3>반려동물 선택</h3>
+                    <div class="form-group">
+                        <label for="petId">반려동물 *</label>
+                        <select id="petId" name="petId" required>
+                            <option value="">등록된 반려동물을 선택하세요</option>
+                        </select>
+                        <small>반려동물이 등록되어 있지 않다면 <a href="pet-register.html">여기</a>에서 등록하세요.</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>증상 선택 (복수 선택 가능)</h3>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        해당하는 증상을 모두 선택해주세요. 더 정확한 진단을 위해 도움이 됩니다.
+                    </p>
+                    
+                    <!-- 소화기 증상 -->
+                    <div class="symptom-category">
+                        <h4>소화기 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="구토">
+                                구토
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="설사">
+                                설사
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="변비">
+                                변비
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="식욕부진">
+                                식욕부진
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="복부팽만">
+                                복부팽만
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="과식">
+                                과식
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="타액과다">
+                                타액과다
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 호흡기 증상 -->
+                    <div class="symptom-category">
+                        <h4>호흡기 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="기침">
+                                기침
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="호흡곤란">
+                                호흡곤란
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="콧물">
+                                콧물
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="재채기">
+                                재채기
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="코막힘">
+                                코막힘
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="숨가쁨">
+                                숨가쁨
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 정형외과 증상 -->
+                    <div class="symptom-category">
+                        <h4>정형외과 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="절뚝거림">
+                                절뚝거림
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="보행이상">
+                                보행이상
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="관절부종">
+                                관절부종
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="일어서기어려움">
+                                일어서기 어려움
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="다리절뚝">
+                                다리 절뚝
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="운동거부">
+                                운동 거부
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 피부과 증상 -->
+                    <div class="symptom-category">
+                        <h4>피부과 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="가려움">
+                                가려움
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="탈모">
+                                탈모
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="발진">
+                                발진
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="상처">
+                                상처
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="피부발적">
+                                피부 발적
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="비듬">
+                                비듬
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="과도한털빠짐">
+                                과도한 털 빠짐
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 신경과 증상 -->
+                    <div class="symptom-category">
+                        <h4>신경과 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="경련">
+                                경련
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="실신">
+                                실신
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="균형이상">
+                                균형 이상
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="의식혼탁">
+                                의식 혼탁
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="행동변화">
+                                행동 변화
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 안과 증상 -->
+                    <div class="symptom-category">
+                        <h4>안과 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="눈물과다">
+                                눈물 과다
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="눈곱">
+                                눈곱
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="시야이상">
+                                시야 이상
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="눈충혈">
+                                눈 충혈
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="눈비틀림">
+                                눈 비틀림
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 기타 증상 -->
+                    <div class="symptom-category">
+                        <h4>기타 증상</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="발열">
+                                발열
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="무기력">
+                                무기력
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="체중감소">
+                                체중 감소
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="다음다뇨">
+                                다음다뇨 (물 많이 마시고 소변 많이 봄)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="배뇨곤란">
+                                배뇨 곤란
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="혈뇨">
+                                혈뇨
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="symptoms" value="기력저하">
+                                기력 저하
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>증상 상세 설명</h3>
+                    <div class="form-group">
+                        <label for="mainComplaint">증상에 대한 자세한 설명 *</label>
+                        <textarea id="mainComplaint" name="mainComplaint" rows="5" 
+                                  placeholder="예: 어제부터 계속 구토를 해요. 식욕도 없고 기운이 없어 보여요. 언제부터 시작되었는지, 어떤 상황에서 발생했는지 등 자세히 적어주세요." required></textarea>
+                        <small>위에서 선택한 증상 외에 추가로 설명할 내용이 있다면 자세히 적어주세요.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="onsetHoursAgo">증상 시작 후 경과 시간 (시간) *</label>
+                        <input type="number" id="onsetHoursAgo" name="onsetHoursAgo" min="0" required>
+                        <small>증상이 처음 나타난 시점부터 현재까지의 시간을 입력해주세요.</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>응급 상황 체크</h3>
+                    <p style="color: var(--danger); font-size: 0.9rem; margin-bottom: 1rem;">
+                        ⚠️ 다음 증상이 있다면 즉시 동물병원에 방문하세요.
+                    </p>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="difficultyBreathing" name="difficultyBreathing">
+                            호흡 곤란
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="continuousVomiting" name="continuousVomiting">
+                            지속적인 구토
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="cannotStand" name="cannotStand">
+                            일어설 수 없음
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="lossOfConsciousness" name="lossOfConsciousness">
+                            의식 잃음
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="severeBleeding" name="severeBleeding">
+                            심한 출혈
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="location.href='index.html'">취소</button>
+                    <button type="submit" class="btn btn-primary">분석 요청</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="js/symptom-input.js"></script>
+</body>
+</html>
