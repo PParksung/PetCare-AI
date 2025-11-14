@@ -1,0 +1,37 @@
+[ {
+  "id" : "hosp_001",
+  "name" : "강남 24시 동물병원",
+  "address" : "서울특별시 강남구 테헤란로 123",
+  "city" : "서울특별시 강남구",
+  "latitude" : 37.5012,
+  "longitude" : 127.0395,
+  "departments" : [ "내과", "외과", "응급의학과" ],
+  "operatingHours" : "24시간",
+  "phone" : "02-1234-5678",
+  "description" : "24시간 응급 진료 가능, 내시경 장비 보유",
+  "distanceKm" : 0.0
+}, {
+  "id" : "hosp_002",
+  "name" : "서초 동물의료센터",
+  "address" : "서울특별시 서초구 서초대로 456",
+  "city" : "서울특별시 서초구",
+  "latitude" : 37.4838,
+  "longitude" : 127.0324,
+  "departments" : [ "내과", "정형외과", "피부과" ],
+  "operatingHours" : "09:00~19:00",
+  "phone" : "02-2345-6789",
+  "description" : "정형외과 전문, CT/MRI 장비 보유",
+  "distanceKm" : 0.0
+}, {
+  "id" : "hosp_003",
+  "name" : "대전 유성 동물병원",
+  "address" : "대전광역시 유성구 대학로 789",
+  "city" : "대전광역시 유성구",
+  "latitude" : 36.3628,
+  "longitude" : 127.3566,
+  "departments" : [ "내과", "외과" ],
+  "operatingHours" : "09:00~18:00",
+  "phone" : "042-3456-7890",
+  "description" : "소화기 내과 전문",
+  "distanceKm" : 0.0
+} ]

@@ -1,0 +1,45 @@
+[ {
+  "id" : "459938a3-af46-4ed1-8987-a15d2af8ce56",
+  "name" : "강아지1",
+  "type" : "dog",
+  "ageYears" : 4,
+  "weightKg" : 6.0,
+  "ownerName" : "테스트1",
+  "ownerPhone" : "010-1234-5678",
+  "locationCity" : "대전광역시 유성구",
+  "locationCountry" : "대한민국",
+  "imagePath" : "/uploads/images/b867eaab-70a6-48fa-a5b2-a08325e87e9d.png"
+}, {
+  "id" : "3decd227-38ad-43c7-ab27-e74bfbc67df4",
+  "name" : "강아지2",
+  "weightKg" : 4.0,
+  "ownerName" : "테스트2",
+  "ownerPhone" : "010-2345-6789",
+  "type" : "dog",
+  "ageYears" : 2,
+  "locationCity" : "세종특별자치시",
+  "locationCountry" : "대한민국",
+  "imagePath" : "/uploads/images/cb53dcd0-f84d-4b22-9173-b22a2caf7e6a.png"
+}, {
+  "id" : "a361e925-5c68-4da9-a932-26ee3a8b9749",
+  "name" : "고양이1",
+  "type" : "cat",
+  "ageYears" : 1,
+  "weightKg" : 3.0,
+  "ownerName" : "테스트3",
+  "ownerPhone" : "010-3456-7890",
+  "locationCity" : "부산광역시",
+  "locationCountry" : "대한민국",
+  "imagePath" : "/uploads/images/492572bf-0dda-469c-9e9a-af531e944170.png"
+}, {
+  "id" : "6df92aea-b8b8-40d0-a6f4-b7d42080992c",
+  "name" : "고양이2",
+  "type" : "cat",
+  "ageYears" : 2,
+  "weightKg" : 4.0,
+  "ownerName" : "테스트4",
+  "ownerPhone" : "010-4567-8901",
+  "locationCity" : "서울특별시",
+  "locationCountry" : "대한민국",
+  "imagePath" : "/uploads/images/540a3540-1acc-4724-a7b1-ce997f6a9e5f.png"
+} ]
