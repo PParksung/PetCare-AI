@@ -42,6 +42,8 @@ bin/
 # 민감한 정보 - API 키 및 설정 파일
 backend/src/main/resources/application-local.properties
 backend/src/main/resources/application-dev.properties
+backend/src/main/resources/application-*.properties
+!backend/src/main/resources/application.properties
 *.key
 *.pem
 *.p12

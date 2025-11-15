@@ -54,7 +54,7 @@ public class AIService {
             System.err.println("   2. Spring Boot 애플리케이션 선택");
             System.err.println("   3. Environment variables 섹션에서:");
             System.err.println("      - Name: GEMINI_API_KEY");
-            System.err.println("      - Value: AIzaSyACTHrxQnjLd5EOqimW3XdrD1CRcmjDpkM");
+            System.err.println("      - Value: (Google AI Studio에서 발급받은 API 키 입력)");
             System.err.println("   4. Apply → OK 후 재시작");
         } else {
             System.out.println("✅ Gemini API 키가 설정되었습니다. (길이: " + apiKey.length() + "자, 시작: " + apiKey.substring(0, Math.min(10, apiKey.length())) + "...)");
