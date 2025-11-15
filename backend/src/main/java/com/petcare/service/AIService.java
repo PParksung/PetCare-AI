@@ -275,16 +275,24 @@ public class AIService {
         }
 
         prompt.append("\n사용자 위치: ").append(userLocation).append("\n");
-        prompt.append("\n사용 가능한 병원 목록 (총 ").append(hospitals.size()).append("개):\n");
+        prompt.append("\n사용 가능한 병원 목록 (거리순 정렬, 총 ").append(hospitals.size()).append("개):\n");
+        prompt.append("⚠️ 중요: 병원 목록은 이미 거리순으로 정렬되어 있습니다. 거리가 가까운 병원이 앞에 있습니다.\n");
+        prompt.append("⚠️ 중요: 추천 진료과는 '").append(analysisResult.getRecommendedDepartment()).append("'입니다. 이 진료과를 운영하는 병원을 우선 추천하세요.\n\n");
         for (int i = 0; i < hospitals.size() && i < 15; i++) {
             Hospital h = hospitals.get(i);
-            prompt.append(i + 1).append(". 병원ID: ").append(h.getId()).append(" - ").append(h.getName()).append("\n");
+            boolean hasRecommendedDept = analysisResult.getRecommendedDepartment() != null && 
+                                        h.getDepartments().contains(analysisResult.getRecommendedDepartment());
+            prompt.append(i + 1).append(". 병원ID: ").append(h.getId()).append(" - ").append(h.getName());
+            if (hasRecommendedDept) {
+                prompt.append(" ⭐ (추천 진료과 운영)");
+            }
+            prompt.append("\n");
             prompt.append("   주소: ").append(h.getAddress()).append("\n");
             prompt.append("   전화: ").append(h.getPhone()).append("\n");
             prompt.append("   운영시간: ").append(h.getOperatingHours()).append("\n");
             prompt.append("   진료과: ").append(String.join(", ", h.getDepartments())).append("\n");
             if (h.getDistanceKm() != null) {
-                prompt.append("   거리: ").append(String.format("%.1f", h.getDistanceKm())).append("km\n");
+                prompt.append("   거리: 약 ").append(String.format("%.1f", h.getDistanceKm())).append("km\n");
             }
             prompt.append("\n");
         }
@@ -302,13 +310,20 @@ public class AIService {
         prompt.append("  ]\n");
         prompt.append("}\n");
         prompt.append("\n=== 중요 사항 ===\n");
-        prompt.append("1. 【필수】반드시 정확히 3개의 병원을 추천해야 합니다. 병원이 3개 미만이면 사용 가능한 병원 중에서 가장 적합한 것을 선택하여 총 3개를 채우세요.\n");
-        prompt.append("2. 【필수】보호자 안내 메시지는 반드시 위의 분석 결과에 맞춰 간단하고 이해하기 쉽게 작성하세요 (4-5문장).\n");
-        prompt.append("3. 【필수】분석 결과의 카테고리와 질환에 맞는 조치사항을 제시하세요. 예를 들어, 호흡기 증상이면 호흡기 관련 조치를, 소화기 증상이면 소화기 관련 조치를 제시하세요.\n");
-        prompt.append("4. 【필수】증상이 다르면 안내 메시지도 달라야 합니다. 이전 분석과 동일한 메시지를 반환하지 마세요.\n");
-        prompt.append("5. 【중요】모든 메시지는 일반 보호자가 쉽게 이해할 수 있도록 간단하고 명확하게 작성하세요. 전문 용어는 피하세요.\n");
-        prompt.append("6. 즉시 조치사항과 주의 관찰 증상은 각각 2-3가지로 간단하게 나열하세요.\n");
-        prompt.append("7. 【절대 금지】분석 결과와 일치하지 않는 조치사항을 제시하지 마세요. 예를 들어, 호흡기 증상인데 구토/설사 관련 조치를 제시하면 안 됩니다.");
+        prompt.append("1. 【필수】병원 목록은 이미 거리순으로 정렬되어 있습니다. 가까운 병원부터 추천하세요.\n");
+        prompt.append("2. 【우선순위】추천 진료과('").append(analysisResult.getRecommendedDepartment()).append("')를 운영하는 병원을 우선 추천하세요.\n");
+        prompt.append("3. 【필수】최대 3개의 **서로 다른** 병원을 추천해야 합니다. 같은 병원을 중복 추천하면 안 됩니다!\n");
+        prompt.append("4. 【필수】각 병원은 서로 다른 병원ID를 가져야 합니다. 병원ID가 중복되면 안 됩니다!\n");
+        prompt.append("5. 【필수】사용 가능한 병원이 3개 이상이면 3개를 추천하고, 3개 미만이면 사용 가능한 병원 수만큼만 추천하세요.\n");
+        prompt.append("6. 【필수】보호자 안내 메시지는 반드시 위의 분석 결과에 맞춰 간단하고 이해하기 쉽게 작성하세요 (4-5문장).\n");
+        prompt.append("7. 【필수】분석 결과의 카테고리와 질환에 맞는 조치사항을 제시하세요. 예를 들어, 호흡기 증상이면 호흡기 관련 조치를, 소화기 증상이면 소화기 관련 조치를 제시하세요.\n");
+        prompt.append("8. 【필수】증상이 다르면 안내 메시지도 달라야 합니다. 이전 분석과 동일한 메시지를 반환하지 마세요.\n");
+        prompt.append("9. 【중요】모든 메시지는 일반 보호자가 쉽게 이해할 수 있도록 간단하고 명확하게 작성하세요. 전문 용어는 피하세요.\n");
+        prompt.append("10. 즉시 조치사항과 주의 관찰 증상은 각각 2-3가지로 간단하게 나열하세요.\n");
+        prompt.append("11. 【절대 금지】분석 결과와 일치하지 않는 조치사항을 제시하지 마세요. 예를 들어, 호흡기 증상인데 구토/설사 관련 조치를 제시하면 안 됩니다.\n");
+        prompt.append("12. 【절대 금지】같은 병원ID를 여러 번 추천하지 마세요. 반드시 서로 다른 병원을 추천해야 합니다!\n");
+        prompt.append("13. 【중요】사용 가능한 병원 목록에 있는 병원ID만 추천하세요. 목록에 없는 병원ID를 추천하면 무시됩니다.\n");
+        prompt.append("14. 【간단 요약】거리 가까운 순서대로, 추천 진료과 운영 병원을 우선하여 최대 3개 추천하세요!");
         
         return prompt.toString();
     }
@@ -379,7 +394,42 @@ public class AIService {
                     // 다른 HTTP 오류는 즉시 throw
                     throw new RuntimeException("Gemini API 호출 실패: " + e.getStatusCode() + " " + e.getMessage(), e);
                 }
+            } catch (org.springframework.web.reactive.function.client.WebClientRequestException e) {
+                // Connection reset, Connection timeout 등 네트워크 오류 처리 (재시도 가능)
+                if (attempt < maxRetries) {
+                    long delayMs = baseDelayMs * (long) Math.pow(2, attempt - 1); // 지수 백오프: 1초, 2초, 4초
+                    System.out.println("⚠️ 네트워크 오류 발생 (" + e.getMessage() + "). " + delayMs + "ms 후 재시도합니다... (시도 " + attempt + "/" + maxRetries + ")");
+                    try {
+                        Thread.sleep(delayMs);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException("재시도 중단됨", ie);
+                    }
+                    continue; // 재시도
+                } else {
+                    System.err.println("❌ 네트워크 오류: 최대 재시도 횟수 초과. 잠시 후 다시 시도해주세요.");
+                    throw new RuntimeException("Gemini API 호출 실패: 네트워크 오류 (" + e.getMessage() + "). 잠시 후 다시 시도해주세요.", e);
+                }
             } catch (Exception e) {
+                // 기타 예외도 재시도 가능한 경우 처리
+                Throwable cause = e.getCause();
+                if (cause instanceof java.net.SocketException || 
+                    cause instanceof java.net.ConnectException ||
+                    e.getMessage() != null && (e.getMessage().contains("Connection reset") || 
+                                               e.getMessage().contains("Connection refused") ||
+                                               e.getMessage().contains("timeout"))) {
+                    if (attempt < maxRetries) {
+                        long delayMs = baseDelayMs * (long) Math.pow(2, attempt - 1);
+                        System.out.println("⚠️ 연결 오류 발생 (" + e.getMessage() + "). " + delayMs + "ms 후 재시도합니다... (시도 " + attempt + "/" + maxRetries + ")");
+                        try {
+                            Thread.sleep(delayMs);
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new RuntimeException("재시도 중단됨", ie);
+                        }
+                        continue; // 재시도
+                    }
+                }
                 throw new RuntimeException("Gemini API 호출 실패: " + e.getMessage(), e);
             }
         }
@@ -448,6 +498,21 @@ public class AIService {
     
     private HospitalRecommendation parseRecommendationResponse(String response, AnalysisResult analysisResult, List<Hospital> hospitals) {
         try {
+            // 사용 가능한 병원이 없는 경우
+            if (hospitals == null || hospitals.isEmpty()) {
+                System.out.println("⚠️ 사용 가능한 병원이 없습니다. 빈 추천 리스트를 반환합니다.");
+                HospitalRecommendation recommendation = new HospitalRecommendation();
+                recommendation.setAnalysisResult(analysisResult);
+                recommendation.setUserFriendlyMessage(
+                    "죄송합니다. 현재 선택하신 지역(" + (analysisResult.getPetId() != null ? "반려동물 위치" : "지역") + 
+                    ")에는 해당 진료과를 운영하는 동물병원이 없습니다. 다른 지역의 병원을 검색하시거나, 일반 동물병원에 문의해보시기 바랍니다."
+                );
+                recommendation.setImmediateActions("1. 다른 지역의 동물병원을 검색해보세요.\n2. 일반 동물병원에 전화로 상담을 요청해보세요.\n3. 응급 상황이라면 가장 가까운 동물병원을 찾아보세요.");
+                recommendation.setWatchFor("1. 증상 악화 여부\n2. 호흡 상태\n3. 전반적인 상태 변화");
+                recommendation.setRecommendedHospitals(new ArrayList<>());
+                return recommendation;
+            }
+            
             JsonNode root = objectMapper.readTree(response);
             
             // Gemini API 응답 형식: candidates[0].content.parts[0].text
@@ -483,11 +548,22 @@ public class AIService {
             System.out.println("AI 추천 병원 수: " + (recHospitals != null && recHospitals.isArray() ? recHospitals.size() : 0));
             
             if (recHospitals != null && recHospitals.isArray()) {
-                // AI가 추천한 병원들 추가
+                // 이미 추천된 병원 ID 목록 (중복 방지)
+                List<String> alreadyRecommendedIds = new ArrayList<>();
+                
+                // AI가 추천한 병원들 추가 (최대 3개 또는 사용 가능한 병원 수만큼)
+                int maxRecommendations = Math.min(3, hospitals.size()); // 최대 3개, 하지만 사용 가능한 병원 수를 초과하지 않음
                 for (JsonNode recHospital : recHospitals) {
-                    if (recommendedHospitals.size() >= 3) break; // 최대 3개로 제한
+                    if (recommendedHospitals.size() >= maxRecommendations) break;
                     
                     String hospitalId = recHospital.get("hospitalId").asText();
+                    
+                    // 중복 체크: 이미 추천된 병원이면 건너뛰기
+                    if (alreadyRecommendedIds.contains(hospitalId)) {
+                        System.out.println("⚠️ 중복 병원 건너뛰기: " + hospitalId);
+                        continue;
+                    }
+                    
                     Hospital hospital = hospitals.stream()
                             .filter(h -> h.getId().equals(hospitalId))
                             .findFirst()
@@ -499,22 +575,21 @@ public class AIService {
                         rec.setRecommendationReason(recHospital.get("recommendationReason").asText());
                         rec.setPriority(recommendedHospitals.size() + 1);
                         recommendedHospitals.add(rec);
+                        alreadyRecommendedIds.add(hospitalId); // 추천 목록에 추가
                         System.out.println("추천 병원 추가: " + hospital.getName() + " (ID: " + hospitalId + ")");
                     } else {
                         System.out.println("병원을 찾을 수 없음: " + hospitalId);
                     }
                 }
                 
-                // AI가 3개 미만 추천한 경우, 나머지를 거리순으로 채움
-                if (recommendedHospitals.size() < 3) {
-                    System.out.println("⚠️ AI가 " + recommendedHospitals.size() + "개만 추천함. 나머지 " + (3 - recommendedHospitals.size()) + "개를 자동으로 추가합니다.");
-                    System.out.println("사용 가능한 병원 수: " + hospitals.size());
+                // AI가 최대 추천 개수 미만 추천한 경우, 나머지를 거리순으로 채움
+                // maxRecommendations는 위에서 이미 선언됨
+                if (recommendedHospitals.size() < maxRecommendations) {
+                    int needed = maxRecommendations - recommendedHospitals.size();
+                    System.out.println("⚠️ AI가 " + recommendedHospitals.size() + "개만 추천함. 나머지 " + needed + "개를 자동으로 추가합니다.");
+                    System.out.println("사용 가능한 병원 수: " + hospitals.size() + ", 최대 추천 개수: " + maxRecommendations);
                     
-                    // 이미 추천된 병원 ID 목록
-                    List<String> alreadyRecommendedIds = recommendedHospitals.stream()
-                            .map(r -> r.getHospital().getId())
-                            .collect(Collectors.toList());
-                    
+                    // 이미 추천된 병원 ID 목록 (위에서 생성한 alreadyRecommendedIds 사용)
                     System.out.println("이미 추천된 병원 ID: " + alreadyRecommendedIds);
                     
                     // 거리순으로 정렬된 병원 목록에서 아직 추천되지 않은 병원 선택
@@ -529,7 +604,6 @@ public class AIService {
                     
                     System.out.println("남은 병원 수: " + remainingHospitals.size());
                     
-                    int needed = 3 - recommendedHospitals.size();
                     for (int i = 0; i < needed && i < remainingHospitals.size(); i++) {
                         Hospital hospital = remainingHospitals.get(i);
                         HospitalRecommendation.RecommendedHospital rec = new HospitalRecommendation.RecommendedHospital();
@@ -540,19 +614,18 @@ public class AIService {
                         System.out.println("✅ 자동 추가 병원: " + hospital.getName() + " (ID: " + hospital.getId() + ")");
                     }
                     
-                    if (recommendedHospitals.size() < 3) {
-                        System.out.println("⚠️ 경고: 여전히 " + recommendedHospitals.size() + "개만 있습니다. 사용 가능한 병원이 부족할 수 있습니다.");
-                    }
+                    System.out.println("✅ 최종 추천 병원 수: " + recommendedHospitals.size() + "개 (사용 가능한 병원: " + hospitals.size() + "개)");
                 }
             } else {
-                // AI 응답에 recommendedHospitals가 없는 경우, 거리순으로 3개 선택
+                // AI 응답에 recommendedHospitals가 없는 경우, 거리순으로 최대 3개 선택 (사용 가능한 병원 수만큼)
+                int maxRecommendations = Math.min(3, hospitals.size());
                 List<Hospital> sortedHospitals = hospitals.stream()
                         .sorted((h1, h2) -> {
                             Double d1 = h1.getDistanceKm() != null ? h1.getDistanceKm() : Double.MAX_VALUE;
                             Double d2 = h2.getDistanceKm() != null ? h2.getDistanceKm() : Double.MAX_VALUE;
                             return d1.compareTo(d2);
                         })
-                        .limit(3)
+                        .limit(maxRecommendations)
                         .collect(Collectors.toList());
                 
                 for (int i = 0; i < sortedHospitals.size(); i++) {
@@ -563,6 +636,7 @@ public class AIService {
                     rec.setPriority(i + 1);
                     recommendedHospitals.add(rec);
                 }
+                System.out.println("✅ AI 응답 없음, 거리순으로 " + recommendedHospitals.size() + "개 병원 자동 추천 (사용 가능한 병원: " + hospitals.size() + "개)");
             }
             recommendation.setRecommendedHospitals(recommendedHospitals);
             System.out.println("최종 추천 병원 수: " + recommendedHospitals.size());

@@ -12,12 +12,12 @@
 }, {
   "id" : "3decd227-38ad-43c7-ab27-e74bfbc67df4",
   "name" : "강아지2",
+  "type" : "dog",
+  "ageYears" : 2,
   "weightKg" : 4.0,
   "ownerName" : "테스트2",
   "ownerPhone" : "010-2345-6789",
-  "type" : "dog",
-  "ageYears" : 2,
-  "locationCity" : "세종특별자치시",
+  "locationCity" : "대전광역시 유성구 궁동",
   "locationCountry" : "대한민국",
   "imagePath" : "/uploads/images/cb53dcd0-f84d-4b22-9173-b22a2caf7e6a.png"
 }, {

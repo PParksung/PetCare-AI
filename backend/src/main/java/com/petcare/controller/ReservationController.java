@@ -50,5 +50,18 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<Reservation> cancelReservation(@PathVariable String id) {
+        try {
+            Reservation cancelled = reservationService.cancelReservation(id);
+            if (cancelled != null) {
+                return ResponseEntity.ok(cancelled);
+            }
+            return ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
 

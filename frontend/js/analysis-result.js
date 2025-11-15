@@ -180,20 +180,35 @@ function displayAnalysisResult(recommendation) {
             if (recHospital.recommendationReason) {
                 html += `<div class="recommendation-reason">💡 ${recHospital.recommendationReason}</div>`;
             }
-            // 지도 링크 추가 (위도/경도 우선, 없으면 병원 이름+주소 사용)
-            let googleMapsUrl = null;
+            // 지도 표시 (OpenStreetMap + Leaflet.js 사용 - 완전 무료!)
             if (hospital.latitude && hospital.longitude) {
-                // 위도/경도가 있으면 더 정확하게 특정 위치로 이동
-                googleMapsUrl = `https://www.google.com/maps?q=${hospital.latitude},${hospital.longitude}&ll=${hospital.latitude},${hospital.longitude}&z=17`;
-            } else if (hospital.name && hospital.address) {
-                // 위도/경도가 없으면 병원 이름과 주소로 검색
+                // Leaflet 지도 컨테이너 추가
+                const mapId = `hospital-map-${hospital.id}`;
+                html += `<div style="margin-top: 1rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">`;
+                html += `<div id="${mapId}" style="width: 100%; height: 300px; border-radius: 8px;"></div>`;
+                html += `</div>`;
+                
+                // 지도 초기화를 위한 데이터 저장
+                if (!window.hospitalMapsToInit) {
+                    window.hospitalMapsToInit = [];
+                }
+                window.hospitalMapsToInit.push({
+                    mapId: mapId,
+                    lat: hospital.latitude,
+                    lon: hospital.longitude,
+                    name: hospital.name
+                });
+            } else if (hospital.name) {
+                // 좌표가 없으면 이름과 주소로 검색 링크 제공
                 const hospitalName = encodeURIComponent(hospital.name);
-                const hospitalAddress = encodeURIComponent(hospital.address);
-                googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${hospitalName}+${hospitalAddress}`;
-            }
-            
-            if (googleMapsUrl) {
-                html += `<div style="margin-top: 1rem;"><a href="${googleMapsUrl}" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="event.stopPropagation();">🗺️ 지도에서 보기</a></div>`;
+                let searchUrl;
+                if (hospital.address) {
+                    const hospitalAddress = encodeURIComponent(hospital.address);
+                    searchUrl = `https://www.openstreetmap.org/search?query=${hospitalName}+${hospitalAddress}`;
+                } else {
+                    searchUrl = `https://www.openstreetmap.org/search?query=${hospitalName}`;
+                }
+                html += `<div style="margin-top: 1rem;"><a href="${searchUrl}" target="_blank" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.9rem;" onclick="event.stopPropagation();">🗺️ 지도에서 보기</a></div>`;
             }
             html += '</div>';
         });
@@ -211,6 +226,34 @@ function displayAnalysisResult(recommendation) {
     
     // 병원 추천 데이터를 로컬 스토리지에 저장
     localStorage.setItem('hospitalRecommendation', JSON.stringify(recommendation));
+    
+    // 지도 초기화 (Leaflet이 로드된 후)
+    if (window.hospitalMapsToInit && window.hospitalMapsToInit.length > 0) {
+        function initMaps() {
+            if (typeof L !== 'undefined') {
+                window.hospitalMapsToInit.forEach(function(mapData) {
+                    const map = L.map(mapData.mapId).setView([mapData.lat, mapData.lon], 17);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 19
+                    }).addTo(map);
+                    
+                    // 마커 추가
+                    L.marker([mapData.lat, mapData.lon])
+                        .addTo(map)
+                        .bindPopup(mapData.name || '동물병원')
+                        .openPopup();
+                });
+                window.hospitalMapsToInit = [];
+            } else {
+                // Leaflet이 아직 로드되지 않았으면 재시도
+                setTimeout(initMaps, 100);
+            }
+        }
+        
+        // DOM이 완전히 렌더링된 후 지도 초기화
+        setTimeout(initMaps, 100);
+    }
 }
 
 function getUrgencyClass(urgency) {

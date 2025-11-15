@@ -43,5 +43,20 @@ public class ReservationService {
                 .filter(r -> r.getPetId().equals(petId))
                 .collect(Collectors.toList());
     }
+    
+    public Reservation cancelReservation(String id) throws IOException {
+        List<Reservation> reservations = getAllReservations();
+        Reservation reservation = reservations.stream()
+                .filter(r -> r.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+        
+        if (reservation != null) {
+            reservation.setStatus("cancelled");
+            fileDataManager.saveListToFile(RESERVATIONS_FILE, reservations);
+        }
+        
+        return reservation;
+    }
 }
 

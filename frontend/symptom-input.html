@@ -23,14 +23,19 @@
 
             <form id="symptomForm" class="form-container">
                 <div class="form-section">
-                    <h3>반려동물 선택</h3>
-                    <div class="form-group">
-                        <label for="petId">반려동물 *</label>
-                        <select id="petId" name="petId" required>
-                            <option value="">등록된 반려동물을 선택하세요</option>
-                        </select>
-                        <small>반려동물이 등록되어 있지 않다면 <a href="pet-register.html">여기</a>에서 등록하세요.</small>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3 style="margin: 0;">선택된 반려동물</h3>
+                        <button type="button" class="btn btn-secondary" onclick="changePet()" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                            반려동물 변경
+                        </button>
                     </div>
+                    <div id="selectedPetInfo" class="selected-pet-info" style="padding: 1.5rem; background: var(--background); border-radius: 8px; border: 2px solid var(--primary-color);">
+                        <!-- 선택된 반려동물 정보가 여기에 동적으로 표시됩니다 -->
+                        <div style="text-align: center; color: var(--text-secondary);">
+                            반려동물 정보를 불러오는 중...
+                        </div>
+                    </div>
+                    <input type="hidden" id="petId" name="petId" required>
                 </div>
 
                 <div class="form-section">
@@ -313,6 +318,7 @@
         </main>
     </div>
 
+    <script src="js/main.js"></script>
     <script src="js/symptom-input.js"></script>
 </body>
 </html>

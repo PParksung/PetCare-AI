@@ -74,39 +74,44 @@ function displayHospitalDetail(hospital) {
     if (hospital.latitude && hospital.longitude) {
         html += '<div class="detail-section">';
         html += '<h3>위치</h3>';
-        html += `<div id="map"></div>`;
-        html += '</div>';
         
-        // 카카오맵 초기화 (API 키가 설정되어 있는 경우)
-        if (typeof kakao !== 'undefined' && kakao.maps) {
-            const mapContainer = document.getElementById('map');
-            const mapOption = {
-                center: new kakao.maps.LatLng(hospital.latitude, hospital.longitude),
-                level: 3
-            };
-            const map = new kakao.maps.Map(mapContainer, mapOption);
+        // OpenStreetMap + Leaflet.js 지도 표시 (완전 무료!)
+        if (hospital.latitude && hospital.longitude) {
+            // Leaflet 지도 컨테이너 추가
+            const mapId = 'hospital-detail-map';
+            html += `<div style="margin-top: 1rem; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">`;
+            html += `<div id="${mapId}" style="width: 100%; height: 400px; border-radius: 8px;"></div>`;
+            html += `</div>`;
             
-            const markerPosition = new kakao.maps.LatLng(hospital.latitude, hospital.longitude);
-            const marker = new kakao.maps.Marker({
-                position: markerPosition
-            });
-            marker.setMap(map);
-        } else {
-            // 카카오맵 API 키가 없는 경우 구글맵 링크 표시
-            // 위도/경도가 있으면 사용하고, 없으면 병원 이름+주소 사용
-            let googleMapsUrl;
-            if (hospital.latitude && hospital.longitude) {
-                // 위도/경도가 있으면 더 정확하게 특정 위치로 이동
-                googleMapsUrl = `https://www.google.com/maps?q=${hospital.latitude},${hospital.longitude}&ll=${hospital.latitude},${hospital.longitude}&z=17`;
-            } else {
-                // 위도/경도가 없으면 병원 이름과 주소로 검색
-                const hospitalName = encodeURIComponent(hospital.name);
+            // 지도 초기화는 displayHospitalDetail 함수 끝에서 실행
+            setTimeout(() => {
+                if (typeof L !== 'undefined') {
+                    const map = L.map(mapId).setView([hospital.latitude, hospital.longitude], 17);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 19
+                    }).addTo(map);
+                    
+                    // 마커 추가
+                    L.marker([hospital.latitude, hospital.longitude])
+                        .addTo(map)
+                        .bindPopup(hospital.name || '동물병원')
+                        .openPopup();
+                }
+            }, 100);
+        } else if (hospital.name) {
+            // 좌표가 없으면 이름과 주소로 검색 링크 제공
+            const hospitalName = encodeURIComponent(hospital.name);
+            let searchUrl;
+            if (hospital.address) {
                 const hospitalAddress = encodeURIComponent(hospital.address);
-                googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${hospitalName}+${hospitalAddress}`;
+                searchUrl = `https://www.openstreetmap.org/search?query=${hospitalName}+${hospitalAddress}`;
+            } else {
+                searchUrl = `https://www.openstreetmap.org/search?query=${hospitalName}`;
             }
-            html = html.replace('<div id="map"></div>', 
-                `<a href="${googleMapsUrl}" target="_blank" class="btn btn-primary">지도에서 보기</a>`);
+            html += `<a href="${searchUrl}" target="_blank" class="btn btn-primary">🗺️ 지도에서 보기</a>`;
         }
+        html += '</div>';
     }
     
     container.innerHTML = html;

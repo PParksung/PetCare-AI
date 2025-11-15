@@ -44,6 +44,9 @@ backend/src/main/resources/application-local.properties
 backend/src/main/resources/application-dev.properties
 backend/src/main/resources/application-*.properties
 !backend/src/main/resources/application.properties
+frontend/js/config.js
+frontend/js/maps-config.js
+# 실행 스크립트는 Git에 포함되지만 API 키는 환경 변수로만 설정
 *.key
 *.pem
 *.p12
