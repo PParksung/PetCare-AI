@@ -947,6 +947,132 @@ footer {
     flex: 1;
 }
 
+/* 예약 관리 페이지 스타일 */
+.reservations-container {
+    margin-top: 2rem;
+}
+
+.reservations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.reservation-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.reservation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.reservation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.reservation-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.status-badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.reservation-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.reservation-info .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.reservation-info .info-item strong {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.reservation-info .info-item span {
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.reservation-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 예약 상세 페이지 스타일 */
+.reservation-detail {
+    margin-top: 2rem;
+}
+
+.reservation-detail-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.detail-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-section h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.8rem;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.pet-info-card,
+.hospital-info-card {
+    background: var(--background);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .container {
@@ -1000,5 +1126,13 @@ footer {
     
     .checkbox-group {
         grid-template-columns: 1fr;
+    }
+    
+    .reservations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .reservation-detail-card {
+        padding: 1.5rem;
     }
 }

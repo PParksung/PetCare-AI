@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 예약 관리 - AI-PetCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐾 AI-PetCare</h1>
+            <nav>
+                <a href="index.html">홈</a>
+                <a href="pet-register.html">반려동물 등록</a>
+            </nav>
+        </header>
+
+        <main>
+            <div class="page-header">
+                <h2>📅 내 예약 관리</h2>
+                <p>예약 내역을 확인하고 관리하세요</p>
+            </div>
+
+            <div id="reservationsList" class="reservations-container">
+                <!-- 예약 목록이 여기에 동적으로 표시됩니다 -->
+                <div class="loading" style="text-align: center; padding: 2rem;">
+                    <p>예약 내역을 불러오는 중...</p>
+                </div>
+            </div>
+
+            <div class="action-buttons" style="margin-top: 2rem;">
+                <button class="btn btn-secondary" onclick="location.href='index.html'">홈으로</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/my-reservations.js"></script>
+</body>
+</html>
+

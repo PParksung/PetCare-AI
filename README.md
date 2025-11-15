@@ -142,10 +142,29 @@ ai.gemini.api.key=${GEMINI_API_KEY:your-gemini-api-key-here}
 - ⚠️ **주의**: 실제 API 키는 절대 이 파일에 직접 입력하지 마세요! 환경 변수만 사용하세요!
 
 **방법 3: 터미널에서 설정 (Maven으로 실행하는 경우)**
+
+터미널에서 실행할 때는 환경 변수를 직접 설정해야 합니다:
+
 ```bash
-export GEMINI_API_KEY=발급받은-API-키-여기에-입력
+# 환경 변수 설정
+export GEMINI_API_KEY=발급받은-Gemini-API-키
+export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키
+
+# 백엔드 실행
 cd backend
 mvn spring-boot:run
+```
+
+또는 한 줄로 실행:
+```bash
+GEMINI_API_KEY=발급받은-Gemini-API-키 KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키 mvn spring-boot:run
+```
+
+💡 **팁**: 매번 입력하기 번거롭다면 `~/.zshrc` (또는 `~/.bashrc`)에 추가하여 영구적으로 설정할 수 있습니다:
+```bash
+echo 'export GEMINI_API_KEY=발급받은-Gemini-API-키' >> ~/.zshrc
+echo 'export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키' >> ~/.zshrc
+source ~/.zshrc
 ```
 
 ⚠️ **보안 주의사항**:
@@ -173,7 +192,78 @@ mvn spring-boot:run
 - 개발/테스트에는 무료 티어로 충분합니다!
 - 결제 정보 등록 없이 바로 사용 가능합니다!
 
-### 2. 백엔드 실행
+### 2. 카카오맵 API 키 발급 및 설정 (선택사항)
+
+⚠️ **중요**: 카카오맵 API 키가 없어도 기본 병원 목록으로 동작합니다. 하지만 실제 동물병원을 검색하려면 API 키가 필요합니다.
+
+카카오맵 API는 **두 가지 키**가 필요합니다:
+1. **REST API 키** (백엔드용) - 동물병원 검색
+2. **JavaScript 키** (프론트엔드용) - 지도 표시
+
+#### API 키 발급 방법
+
+1. **카카오 개발자 콘솔 접속**
+   ```
+   https://developers.kakao.com/
+   ```
+   - 카카오 계정으로 로그인
+
+2. **애플리케이션 등록** (이미 완료했다면 건너뛰기)
+   - "내 애플리케이션" → "애플리케이션 추가하기"
+   - 앱 이름, 사업자명 입력 후 저장
+
+3. **플랫폼 설정**
+   - "앱 설정" → "플랫폼" → "Web 플랫폼 등록"
+   - 사이트 도메인: `http://localhost:3000` (프론트엔드용)
+   - 사이트 도메인: `http://localhost:8080` (백엔드용, 선택사항)
+
+4. **API 키 확인**
+   - "앱 설정" → "앱 키"에서 확인:
+     - **REST API 키** (백엔드용 - 동물병원 검색)
+     - **JavaScript 키** (프론트엔드용 - 지도 표시)
+
+#### 백엔드 REST API 키 설정 (동물병원 검색용)
+
+**방법 1: 환경 변수 설정 (권장)**
+```bash
+export KAKAO_MAP_API_KEY=발급받은-REST-API-키
+```
+
+**방법 2: IntelliJ 환경 변수 설정**
+- `Run` → `Edit Configurations...`
+- `Environment variables`에 추가:
+  - **Name**: `KAKAO_MAP_API_KEY`
+  - **Value**: `발급받은-REST-API-키`
+
+#### 프론트엔드 JavaScript 키 설정 (지도 표시용)
+
+1. `frontend/js/config.js` 파일 열기
+2. 아래 줄을 찾아서 실제 JavaScript 키로 교체:
+   ```javascript
+   window.KAKAO_MAP_JS_KEY = '발급받은-JavaScript-키';
+   ```
+3. 예시 (실제 키로 교체하세요):
+   ```javascript
+   window.KAKAO_MAP_JS_KEY = '발급받은-JavaScript-키';
+   ```
+
+⚠️ **보안 주의사항**:
+- API 키는 절대 Git에 커밋하지 마세요!
+- `config.js`는 `.gitignore`에 포함되어 있습니다
+- 환경 변수 사용을 강력히 권장합니다 (백엔드)
+
+#### 요금 정보
+
+**무료 티어:**
+- ✅ **일일 300,000건 무료** (매우 넉넉함!)
+- ✅ **월 1,000,000건 무료**
+- ✅ **결제 정보 등록 불필요!**
+
+💡 **팁**: 
+- 개발/테스트에는 무료 티어로 충분합니다!
+- 실제 동물병원 검색이 가능해집니다!
+
+### 3. 백엔드 실행
 
 1. Java 17 이상이 설치되어 있어야 합니다.
 2. Maven이 설치되어 있어야 합니다.
@@ -181,18 +271,39 @@ mvn spring-boot:run
    ```bash
    cd backend
    ```
-4. Maven으로 프로젝트 빌드 및 실행:
+
+4. **환경 변수 설정 후 실행**
+
+   **방법 A: 환경 변수를 먼저 설정 (권장)**
    ```bash
+   # 환경 변수 설정
+   export GEMINI_API_KEY=발급받은-Gemini-API-키
+   export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키
+   
+   # 실행
    mvn spring-boot:run
    ```
-   또는
+
+   **방법 B: 실행 스크립트 사용**
    ```bash
-   mvn clean install
-   java -jar target/petcare-ai-1.0.0.jar
+   # 환경 변수 설정
+   export GEMINI_API_KEY=발급받은-Gemini-API-키
+   export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키
+   
+   # 스크립트 실행
+   ./run.sh
    ```
+
+   **방법 C: 한 줄로 실행**
+   ```bash
+   GEMINI_API_KEY=발급받은-Gemini-API-키 KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키 mvn spring-boot:run
+   ```
+
 5. 백엔드 서버가 `http://localhost:8080`에서 실행됩니다.
 
-### 3. 프론트엔드 실행
+💡 **팁**: IntelliJ에서 실행할 때는 IntelliJ의 환경 변수 설정이 자동으로 적용됩니다. 터미널에서 실행할 때만 위의 환경 변수 설정이 필요합니다.
+
+### 4. 프론트엔드 실행
 
 1. 프론트엔드 디렉토리로 이동:
    ```bash

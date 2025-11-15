@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('저장할 이미지 경로:', imagePathToSave);
         console.log('업로드된 이미지 경로:', uploadedImagePath);
         
+        // 주소 조합: 시/도 + 구/동
+        const locationCity = document.getElementById('locationCity').value;
+        const locationDetail = document.getElementById('locationDetail').value.trim();
+        const fullLocation = locationDetail ? `${locationCity} ${locationDetail}` : locationCity;
+        
         const formData = {
             name: document.getElementById('petName').value,
             type: document.getElementById('petType').value,
@@ -78,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             weightKg: parseFloat(document.getElementById('weightKg').value),
             ownerName: document.getElementById('ownerName').value,
             ownerPhone: document.getElementById('ownerPhone').value,
-            locationCity: document.getElementById('locationCity').value,
+            locationCity: fullLocation, // 시/도 + 구/동 조합
             locationCountry: document.getElementById('locationCountry').value,
             imagePath: imagePathToSave,
         };
@@ -145,7 +150,22 @@ async function loadPetForEdit(petId) {
             document.getElementById('petType').value = pet.type || '';
             document.getElementById('ageYears').value = pet.ageYears || '';
             document.getElementById('weightKg').value = pet.weightKg || '';
-            document.getElementById('locationCity').value = pet.locationCity || '';
+            
+            // 주소 분리: 시/도와 구/동 분리
+            const locationCity = pet.locationCity || '';
+            if (locationCity) {
+                // 시/도 추출 (예: "대전광역시 유성구 궁동" → "대전광역시")
+                const cityMatch = locationCity.match(/^(서울특별시|부산광역시|대구광역시|인천광역시|광주광역시|대전광역시|울산광역시|세종특별자치시|경기도|강원도|충청북도|충청남도|전라북도|전라남도|경상북도|경상남도|제주특별자치도)/);
+                if (cityMatch) {
+                    document.getElementById('locationCity').value = cityMatch[1];
+                    // 나머지 부분을 구/동으로 설정
+                    const detail = locationCity.substring(cityMatch[1].length).trim();
+                    document.getElementById('locationDetail').value = detail;
+                } else {
+                    // 매칭되지 않으면 전체를 시/도로 설정
+                    document.getElementById('locationCity').value = locationCity;
+                }
+            }
             document.getElementById('locationCountry').value = pet.locationCountry || '';
             
             // 이미지 표시
