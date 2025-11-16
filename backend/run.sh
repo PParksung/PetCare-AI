@@ -3,8 +3,8 @@
 # 백엔드 실행 스크립트
 # 환경 변수를 설정하고 Spring Boot 애플리케이션을 실행합니다
 
-# 환경 변수 설정 (여기에 API 키를 직접 입력하세요)
-export GEMINI_API_KEY=AIzaSyC6VgP7CQM25ULOum2z6zAAcGwmTJh5r6Y
+# 환경 변수 설정 (여기에 발급받은 API 키를 입력하세요)
+export GEMINI_API_KEY=발급받은-API-키-여기에-입력
 
 # 환경 변수 확인
 if [ -z "$GEMINI_API_KEY" ]; then

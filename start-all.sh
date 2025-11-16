@@ -10,8 +10,8 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}🚀 Backend와 Frontend를 시작합니다...${NC}"
 
-# 환경 변수 설정
-export GEMINI_API_KEY=AIzaSyC6VgP7CQM25ULOum2z6zAAcGwmTJh5r6Y
+# 환경 변수 설정 (여기에 발급받은 API 키를 입력하세요)
+export GEMINI_API_KEY=발급받은-API-키-여기에-입력
 
 # Backend 실행 (백그라운드)
 echo -e "${BLUE}📦 Backend 시작 중...${NC}"
