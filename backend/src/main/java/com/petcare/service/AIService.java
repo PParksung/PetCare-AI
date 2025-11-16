@@ -45,16 +45,15 @@ public class AIService {
         System.out.println("로드된 API 키 값: " + (apiKey == null ? "null" : (apiKey.length() > 20 ? apiKey.substring(0, 20) + "..." : apiKey)));
         System.out.println("API 키 길이: " + (apiKey == null ? "null" : apiKey.length()));
         
-        if (apiKey == null || apiKey.trim().isEmpty() || apiKey.equals("your-gemini-api-key-here")) {
+        if (apiKey == null || apiKey.trim().isEmpty()) {
             System.err.println("⚠️ 경고: Gemini API 키가 설정되지 않았습니다!");
-            System.err.println("⚠️ 환경 변수 GEMINI_API_KEY를 설정하거나 application.properties에서 ai.gemini.api.key를 설정하세요.");
+            System.err.println("⚠️ 환경 변수 GEMINI_API_KEY를 설정하세요.");
             System.err.println("⚠️ API 키 발급: https://aistudio.google.com/app/apikey");
             System.err.println("⚠️ IntelliJ 설정 방법:");
             System.err.println("   1. Run → Edit Configurations...");
             System.err.println("   2. Spring Boot 애플리케이션 선택");
-            System.err.println("   3. Environment variables 섹션에서:");
-            System.err.println("      - Name: GEMINI_API_KEY");
-            System.err.println("      - Value: (Google AI Studio에서 발급받은 API 키 입력)");
+            System.err.println("   3. Environment variables 필드에 입력:");
+            System.err.println("      GEMINI_API_KEY=AIzaSyC6VgP7CQM25ULOum2z6zAAcGwmTJh5r6Y");
             System.err.println("   4. Apply → OK 후 재시작");
         } else {
             System.out.println("✅ Gemini API 키가 설정되었습니다. (길이: " + apiKey.length() + "자, 시작: " + apiKey.substring(0, Math.min(10, apiKey.length())) + "...)");

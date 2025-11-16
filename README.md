@@ -2,77 +2,91 @@
 
 AI 기반 반려동물 건강 설문 분석 및 동물병원 추천·예약 웹 서비스
 
+## 📋 목차
+
+- [프로젝트 개요](#프로젝트-개요)
+- [기술 스택](#기술-스택)
+- [프로젝트 구조](#프로젝트-구조)
+- [시작하기](#시작하기)
+  - [필수 요구사항](#필수-요구사항)
+  - [Google Gemini API 키 발급](#google-gemini-api-키-발급)
+  - [API 키 설정 방법](#api-키-설정-방법)
+  - [실행 방법](#실행-방법)
+- [주요 기능](#주요-기능)
+- [API 엔드포인트](#api-엔드포인트)
+- [데이터 저장](#데이터-저장)
+- [개발 참고사항](#개발-참고사항)
+
 ## 프로젝트 개요
 
-반려동물 보호자가 설문과 자연어로 증상을 입력하면, AI가 증상을 분석하고 정리하며, 이를 바탕으로 병원 추천과 예약 안내까지 제공하는 웹 서비스입니다.
+반려동물 보호자가 설문과 자연어로 증상을 입력하면, AI(Gemini)가 증상을 분석하고 정리하며, 이를 바탕으로 병원 추천과 예약 안내까지 제공하는 웹 서비스입니다.
 
 ## 기술 스택
 
 ### 백엔드
-- Spring Boot 3.2.0
-- Java 17
-- Maven
-- JSON 파일 기반 데이터 저장 (DB 없음)
-- OpenAI API (GPT-4o-mini) 연동
+- **Spring Boot 3.2.0**
+- **Java 17**
+- **Maven**
+- **JSON 파일 기반 데이터 저장** (DB 없음)
+- **Google Gemini API** (Gemini 2.5 Flash) 연동
+- **OpenStreetMap + Leaflet.js** (무료 지도 서비스)
 
 ### 프론트엔드
-- HTML5
-- CSS3
-- JavaScript (Vanilla JS)
-- Fetch API
+- **HTML5, CSS3**
+- **JavaScript (Vanilla JS)**
+- **Fetch API**
+- **OpenStreetMap + Leaflet.js** (지도 표시)
 
 ## 프로젝트 구조
 
 ```
 프로젝트 루트/
 ├── backend/                    # Spring Boot 백엔드
-│   ├── src/
-│   │   └── main/
-│   │       ├── java/com/petcare/
-│   │       │   ├── PetCareApplication.java
-│   │       │   ├── config/     # CORS, Web 설정
-│   │       │   ├── controller/ # REST API 컨트롤러
-│   │       │   ├── model/      # 데이터 모델
-│   │       │   ├── service/    # 비즈니스 로직, AI 서비스
-│   │       │   └── util/       # 유틸리티 클래스
-│   │       └── resources/
-│   │           └── application.properties
-│   ├── data/                    # JSON 데이터 저장 폴더
-│   ├── uploads/images/          # 업로드된 이미지 저장 폴더
+│   ├── src/main/java/com/petcare/
+│   │   ├── PetCareApplication.java
+│   │   ├── config/             # CORS, Web 설정
+│   │   ├── controller/         # REST API 컨트롤러
+│   │   ├── model/              # 데이터 모델
+│   │   ├── service/            # 비즈니스 로직, AI 서비스
+│   │   └── util/               # 유틸리티 클래스
+│   ├── src/main/resources/
+│   │   └── application.properties
+│   ├── data/                   # JSON 데이터 저장 폴더
+│   ├── uploads/images/         # 업로드된 이미지 저장 폴더
 │   └── pom.xml
-├── frontend/                    # 프론트엔드
-│   ├── index.html              # 메인 페이지 (반려동물 리스트)
-│   ├── pet-register.html       # 반려동물 등록 (이미지 업로드 포함)
+├── frontend/                   # 프론트엔드
+│   ├── index.html              # 메인 페이지
+│   ├── pet-register.html       # 반려동물 등록
 │   ├── symptom-input.html      # 증상 입력
-│   ├── analysis-result.html    # 분석 결과 (증상 상세 + 병원 추천)
-│   ├── hospital-list.html      # 병원 목록
+│   ├── analysis-result.html    # 분석 결과
 │   ├── hospital-detail.html    # 병원 상세
-│   ├── reservation.html        # 예약
+│   ├── my-reservations.html    # 내 예약 관리
 │   ├── css/
-│   │   └── style.css           # Wayopet 스타일 참고 디자인
+│   │   └── style.css
 │   └── js/
-│       ├── main.js
-│       ├── index.js            # 메인 페이지 로직
-│       ├── pet-register.js     # 이미지 업로드 포함
-│       ├── symptom-input.js
-│       ├── analysis-result.js  # 증상 상세 설명 강조
-│       ├── hospital-list.js
-│       ├── hospital-detail.js
-│       └── reservation.js
+│       └── *.js
+├── start-all.sh                # Backend + Frontend 동시 실행 스크립트
 └── README.md
 ```
 
-## 실행 방법
+## 시작하기
 
-### 1. Google Gemini API 키 발급 및 설정
+### 필수 요구사항
 
-#### ✅ Gemini API는 무료입니다!
+- **Java 17 이상**
+- **Maven 3.6 이상**
+- **Python 3** (Frontend 서버 실행용, 또는 Node.js)
+- **Google Gemini API 키** (무료)
+
+### Google Gemini API 키 발급
+
+#### ✅ Gemini API는 완전 무료입니다!
 
 **무료 티어 제공:**
-- **일일 1,500 요청 무료** (매우 넉넉함!)
-- **월 15 RPM** (분당 15 요청)
-- **결제 정보 등록 불필요!** (OpenAI와 달리 신용카드 등록 안 해도 됨)
-- 💡 **장점**: 개발/테스트에 충분한 무료 사용량 제공
+- ✅ **일일 1,500 요청 무료** (매우 넉넉함!)
+- ✅ **월 15 RPM** (분당 15 요청)
+- ✅ **결제 정보 등록 불필요!** (신용카드 등록 안 해도 됨)
+- ✅ **Gemini 2.5 Flash 모델 사용 가능**
 
 #### API 키 발급 방법 (단계별)
 
@@ -88,238 +102,153 @@ AI 기반 반려동물 건강 설문 분석 및 동물병원 추천·예약 웹 
      - **"Create API key in new project"** 선택 (권장)
      - 또는 기존 Google Cloud 프로젝트 선택
    - **"Create API key"** 클릭
+
+3. **API 키 복사 및 저장**
    - ⚠️ **중요**: 생성된 키를 즉시 복사하세요! (다시 볼 수 없습니다)
    - 키는 `AIza...`로 시작하는 긴 문자열입니다
+   - 안전한 곳에 저장하세요
 
-3. **API 키 확인**
-   - 생성된 키가 화면에 표시됩니다
-   - 복사 버튼을 클릭하여 키를 복사하세요
-   - 안전한 곳에 저장하세요 (나중에 다시 볼 수 없음)
-
-#### API 키 설정 방법
-
-**방법 1: IntelliJ 환경 변수 설정**
-
-⚠️ **주의**: IntelliJ의 환경 변수 설정이 제대로 작동하지 않을 수 있습니다. 아래 방법을 시도해보세요.
-
-1. **IntelliJ에서 설정 (방법 A: 테이블 형식)**
-   - 상단 메뉴: `Run` → `Edit Configurations...`
-   - 왼쪽에서 Spring Boot 애플리케이션 선택 (또는 `PetCareApplication` 선택)
-   - 오른쪽 패널에서 `Environment variables` 섹션 찾기
-   - `+` 버튼 클릭하여 테이블에 추가:
-     - **Name**: `GEMINI_API_KEY` (정확히 이 이름, 대소문자 구분)
-     - **Value**: `발급받은-API-키-여기에-입력` (Google AI Studio에서 발급받은 키)
-   - `Apply` → `OK` 클릭
-   - ⚠️ **중요**: 백엔드 완전히 중지 후 재시작
-
-2. **IntelliJ에서 설정 (방법 B: 한 줄 입력)**
-   - `Environment variables` 필드에 직접 입력:
-   - `GEMINI_API_KEY=발급받은-API-키-여기에-입력`
-   - ⚠️ 등호(`=`) 앞뒤에 **공백 없이** 입력
-   - ⚠️ 키가 잘리지 않도록 전체를 입력
-   - `Apply` → `OK` 클릭
-   - ⚠️ **중요**: 백엔드 완전히 중지 후 재시작
-
-3. **확인 방법**
-   - 백엔드 재시작 후 콘솔 확인:
-   - `환경 변수 GEMINI_API_KEY: AIza...` (키의 일부만 표시) → 정상
-   - `환경 변수 GEMINI_API_KEY: null` → 환경 변수 미적용
-
-💡 **팁**: IntelliJ 환경 변수가 작동하지 않으면, 아래 "방법 2"를 사용하세요.
-
-**방법 2: application.properties에 기본값 설정 (임시 해결책)**
-
-IntelliJ 환경 변수가 작동하지 않을 때 사용:
-
-`backend/src/main/resources/application.properties` 파일을 열고:
-```properties
-ai.gemini.api.key=${GEMINI_API_KEY:your-gemini-api-key-here}
+**예시 키 형식:**
+```
+AIzaSyC6VgP7CQM25ULOum2z6zAAcGwmTJh5r6Y
 ```
 
-이렇게 하면:
-- 환경 변수 `GEMINI_API_KEY`가 있으면 환경 변수 사용
-- 환경 변수가 없으면 기본값 사용 (실제 키는 입력하지 마세요!)
-- ⚠️ **주의**: 실제 API 키는 절대 이 파일에 직접 입력하지 마세요! 환경 변수만 사용하세요!
+### API 키 설정 방법
 
-**방법 3: 터미널에서 설정 (Maven으로 실행하는 경우)**
+#### 방법 1: IntelliJ 환경 변수 설정 (권장)
 
-터미널에서 실행할 때는 환경 변수를 직접 설정해야 합니다:
+IntelliJ에서 실행할 때 사용하는 방법입니다.
+
+1. **IntelliJ Run Configuration 설정**
+   - `Run` → `Edit Configurations...`
+   - Spring Boot 애플리케이션 선택 (`PetCareApplication`)
+   - **Environment variables** 필드에 입력:
+     ```
+     GEMINI_API_KEY=AIzaSyC6VgP7CQM25ULOum2z6zAAcGwmTJh5r6Y
+     ```
+     - ⚠️ 등호(`=`) 앞뒤에 **공백 없이** 입력
+     - 전체 키를 정확히 입력
+   - `Apply` → `OK` 클릭
+
+2. **확인 방법**
+   - IntelliJ에서 `PetCareApplication` 실행
+   - 콘솔에서 다음 메시지 확인:
+     ```
+     ✅ Gemini API 키가 설정되었습니다.
+     ```
+
+#### 방법 2: 실행 스크립트 사용 (터미널 실행 시)
+
+터미널에서 `mvn spring-boot:run` 또는 `./start-all.sh`로 실행할 때 사용합니다.
+
+**`start-all.sh` 스크립트 수정:**
+```bash
+# start-all.sh 파일 열기
+# 7번째 줄의 API 키를 발급받은 키로 수정:
+export GEMINI_API_KEY=발급받은-API-키-여기에-입력
+```
+
+**또는 `backend/run.sh` 스크립트 수정:**
+```bash
+# backend/run.sh 파일 열기
+# 7번째 줄의 API 키를 발급받은 키로 수정:
+export GEMINI_API_KEY=발급받은-API-키-여기에-입력
+```
+
+#### 방법 3: 터미널에서 직접 설정
 
 ```bash
 # 환경 변수 설정
-export GEMINI_API_KEY=발급받은-Gemini-API-키
-export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키
+export GEMINI_API_KEY=발급받은-API-키
 
-# 백엔드 실행
+# Backend 실행
 cd backend
 mvn spring-boot:run
 ```
 
-또는 한 줄로 실행:
+### 실행 방법
+
+#### 방법 1: 한 번에 실행 (권장) ⭐
+
+프로젝트 루트에서 실행 스크립트 사용:
+
 ```bash
-GEMINI_API_KEY=발급받은-Gemini-API-키 KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키 mvn spring-boot:run
+./start-all.sh
 ```
 
-💡 **팁**: 매번 입력하기 번거롭다면 `~/.zshrc` (또는 `~/.bashrc`)에 추가하여 영구적으로 설정할 수 있습니다:
-```bash
-echo 'export GEMINI_API_KEY=발급받은-Gemini-API-키' >> ~/.zshrc
-echo 'export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키' >> ~/.zshrc
-source ~/.zshrc
-```
+**실행 결과:**
+- ✅ Backend가 `http://localhost:8080`에서 실행
+- ✅ Frontend가 `http://localhost:3000`에서 실행
+- ✅ API 키 연동 상태 확인 메시지 표시
 
-⚠️ **보안 주의사항**:
-- API 키는 절대 Git에 커밋하지 마세요!
-- `.gitignore`에 `application.properties`가 포함되어 있는지 확인하세요
-- **환경 변수 사용을 강력히 권장합니다** (보안상 가장 안전)
+**종료 방법:**
+- `Ctrl + C` 후 다음 명령어 실행:
+  ```bash
+  kill [Backend PID] [Frontend PID]
+  ```
+  (PID는 스크립트 실행 시 표시됨)
 
-#### 요금 정보
+#### 방법 2: IntelliJ에서 실행
 
-**무료 티어 (기본 제공):**
-- ✅ **일일 1,500 요청 무료** (매우 넉넉함!)
-- ✅ **월 15 RPM** (분당 15 요청)
-- ✅ **결제 정보 등록 불필요!** (신용카드 등록 안 해도 됨)
-- ✅ **Gemini 1.5 Flash 모델 사용 가능**
+1. **Backend 실행**
+   - `PetCareApplication.java` 파일 열기
+   - 상단 실행 버튼(▶️) 클릭
+   - 또는 `Run` → `Run 'PetCareApplication'`
+   - Environment variables 설정이 자동 적용됨
 
-**유료 요금** (무료 한도 초과 시 - 거의 발생하지 않음):
-- Gemini 1.5 Flash: 매우 저렴
-  - 입력: $0.075 / 1M 토큰
-  - 출력: $0.30 / 1M 토큰
-- 예상 사용량: 증상 분석 1회당 약 1,000-2,000 토큰
-- **일일 1,500 요청이면 약 1,500-3,000회 분석 가능** (무료!)
-
-💡 **팁**: 
-- Gemini는 OpenAI보다 **빠르고 무료 티어가 넉넉**합니다!
-- 개발/테스트에는 무료 티어로 충분합니다!
-- 결제 정보 등록 없이 바로 사용 가능합니다!
-
-### 2. 카카오맵 API 키 발급 및 설정 (선택사항)
-
-⚠️ **중요**: 카카오맵 API 키가 없어도 기본 병원 목록으로 동작합니다. 하지만 실제 동물병원을 검색하려면 API 키가 필요합니다.
-
-카카오맵 API는 **두 가지 키**가 필요합니다:
-1. **REST API 키** (백엔드용) - 동물병원 검색
-2. **JavaScript 키** (프론트엔드용) - 지도 표시
-
-#### API 키 발급 방법
-
-1. **카카오 개발자 콘솔 접속**
-   ```
-   https://developers.kakao.com/
-   ```
-   - 카카오 계정으로 로그인
-
-2. **애플리케이션 등록** (이미 완료했다면 건너뛰기)
-   - "내 애플리케이션" → "애플리케이션 추가하기"
-   - 앱 이름, 사업자명 입력 후 저장
-
-3. **플랫폼 설정**
-   - "앱 설정" → "플랫폼" → "Web 플랫폼 등록"
-   - 사이트 도메인: `http://localhost:3000` (프론트엔드용)
-   - 사이트 도메인: `http://localhost:8080` (백엔드용, 선택사항)
-
-4. **API 키 확인**
-   - "앱 설정" → "앱 키"에서 확인:
-     - **REST API 키** (백엔드용 - 동물병원 검색)
-     - **JavaScript 키** (프론트엔드용 - 지도 표시)
-
-#### 백엔드 REST API 키 설정 (동물병원 검색용)
-
-**방법 1: 환경 변수 설정 (권장)**
-```bash
-export KAKAO_MAP_API_KEY=발급받은-REST-API-키
-```
-
-**방법 2: IntelliJ 환경 변수 설정**
-- `Run` → `Edit Configurations...`
-- `Environment variables`에 추가:
-  - **Name**: `KAKAO_MAP_API_KEY`
-  - **Value**: `발급받은-REST-API-키`
-
-#### 프론트엔드 JavaScript 키 설정 (지도 표시용)
-
-1. `frontend/js/config.js` 파일 열기
-2. 아래 줄을 찾아서 실제 JavaScript 키로 교체:
-   ```javascript
-   window.KAKAO_MAP_JS_KEY = '발급받은-JavaScript-키';
-   ```
-3. 예시 (실제 키로 교체하세요):
-   ```javascript
-   window.KAKAO_MAP_JS_KEY = '발급받은-JavaScript-키';
-   ```
-
-⚠️ **보안 주의사항**:
-- API 키는 절대 Git에 커밋하지 마세요!
-- `config.js`는 `.gitignore`에 포함되어 있습니다
-- 환경 변수 사용을 강력히 권장합니다 (백엔드)
-
-#### 요금 정보
-
-**무료 티어:**
-- ✅ **일일 300,000건 무료** (매우 넉넉함!)
-- ✅ **월 1,000,000건 무료**
-- ✅ **결제 정보 등록 불필요!**
-
-💡 **팁**: 
-- 개발/테스트에는 무료 티어로 충분합니다!
-- 실제 동물병원 검색이 가능해집니다!
-
-### 3. 백엔드 실행
-
-1. Java 17 이상이 설치되어 있어야 합니다.
-2. Maven이 설치되어 있어야 합니다.
-3. 백엔드 디렉토리로 이동:
-   ```bash
-   cd backend
-   ```
-
-4. **환경 변수 설정 후 실행**
-
-   **방법 A: 환경 변수를 먼저 설정 (권장)**
-   ```bash
-   # 환경 변수 설정
-   export GEMINI_API_KEY=발급받은-Gemini-API-키
-   export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키
-   
-   # 실행
-   mvn spring-boot:run
-   ```
-
-   **방법 B: 실행 스크립트 사용**
-   ```bash
-   # 환경 변수 설정
-   export GEMINI_API_KEY=발급받은-Gemini-API-키
-   export KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키
-   
-   # 스크립트 실행
-   ./run.sh
-   ```
-
-   **방법 C: 한 줄로 실행**
-   ```bash
-   GEMINI_API_KEY=발급받은-Gemini-API-키 KAKAO_MAP_API_KEY=발급받은-카카오맵-REST-API-키 mvn spring-boot:run
-   ```
-
-5. 백엔드 서버가 `http://localhost:8080`에서 실행됩니다.
-
-💡 **팁**: IntelliJ에서 실행할 때는 IntelliJ의 환경 변수 설정이 자동으로 적용됩니다. 터미널에서 실행할 때만 위의 환경 변수 설정이 필요합니다.
-
-### 4. 프론트엔드 실행
-
-1. 프론트엔드 디렉토리로 이동:
+2. **Frontend 실행** (별도 터미널)
    ```bash
    cd frontend
+   python3 -m http.server 3000
    ```
-2. 로컬 웹 서버 실행 (예: Python):
-   ```bash
-   # Python 3
-   python -m http.server 3000
-   
-   # 또는 Node.js http-server
-   npx http-server -p 3000
-   ```
-3. 브라우저에서 `http://localhost:3000` 접속
 
-**참고**: 프론트엔드를 직접 파일로 열면 CORS 오류가 발생할 수 있습니다. 반드시 웹 서버를 통해 실행하세요.
+#### 방법 3: 수동 실행
+
+**Backend:**
+```bash
+cd backend
+export GEMINI_API_KEY=발급받은-API-키
+mvn spring-boot:run
+```
+
+**Frontend** (새 터미널):
+```bash
+cd frontend
+python3 -m http.server 3000
+```
+
+### 접속 주소
+
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080/api
+
+## 주요 기능
+
+1. **반려동물 등록**
+   - 보호자 및 반려동물 정보 입력
+   - 반려동물 이미지 업로드
+
+2. **증상 입력**
+   - 체크박스로 증상 선택
+   - 자연어로 증상 상세 설명
+   - 응급 상황 체크
+
+3. **AI 증상 분석**
+   - Google Gemini API를 사용한 증상 분석
+   - 가능한 질환 후보 제시
+   - 긴급도 평가
+   - 추천 진료과 안내
+
+4. **병원 추천**
+   - 사용자 위치 기반 병원 필터링
+   - 분석 결과에 맞는 병원 추천
+   - 병원 상세 정보 및 지도 표시 (OpenStreetMap)
+
+5. **예약 관리**
+   - 병원 예약 생성
+   - 내 예약 목록 조회
+   - 예약 상세 정보 확인
+   - 예약 취소
 
 ## API 엔드포인트
 
@@ -333,64 +262,61 @@ export KAKAO_MAP_API_KEY=발급받은-REST-API-키
 - `GET /api/images/{filename}` - 이미지 조회
 
 ### 증상 분석
-- `POST /api/symptoms/analyze` - 증상 분석 요청 (AI1, AI2 호출)
+- `POST /api/symptoms/analyze` - 증상 분석 요청
 
 ### 병원 관리
 - `GET /api/hospitals` - 모든 병원 조회
-- `GET /api/hospitals?city={city}` - 도시별 병원 조회
-- `GET /api/hospitals?department={dept}` - 진료과별 병원 조회
 - `GET /api/hospitals/{id}` - 특정 병원 조회
 
 ### 예약 관리
 - `POST /api/reservations` - 예약 생성
 - `GET /api/reservations/{id}` - 특정 예약 조회
 - `GET /api/reservations/pet/{petId}` - 반려동물별 예약 조회
-
-## AI 기능
-
-### AI1: 증상 분석 및 구조화
-- 입력: 증상 요청 정보 + 반려동물 정보
-- 출력: 질환 후보, 긴급도, 추천 진료과
-- 구현 위치: `AIService.analyzeSymptoms()`
-
-### AI2: 맞춤형 설명 및 병원 추천
-- 입력: AI1 분석 결과 + 사용자 위치 + 병원 목록
-- 출력: 보호자 안내 메시지 + 추천 병원 목록
-- 구현 위치: `AIService.recommendHospitals()`
+- `PUT /api/reservations/{id}/cancel` - 예약 취소
 
 ## 데이터 저장
 
-모든 데이터는 파일로 저장됩니다:
+모든 데이터는 JSON 파일로 저장됩니다:
 - `backend/data/pets.json` - 반려동물 정보
-- `backend/data/hospitals.json` - 병원 정보 (초기 샘플 데이터 포함)
+- `backend/data/hospitals.json` - 병원 정보 (100개 이상의 샘플 데이터 포함)
 - `backend/data/reservations.json` - 예약 정보
 - `backend/uploads/images/` - 업로드된 이미지 파일
 
-## 주요 기능
-
-1. **반려동물 등록**: 보호자 및 반려동물 정보 입력 + 이미지 업로드
-2. **메인 페이지**: 등록된 반려동물 리스트 표시 (이미지 포함)
-3. **증상 입력**: 자연어로 증상 설명 및 응급 상황 체크
-4. **AI 분석**: 증상 분석 및 가능한 질환 후보 제시
-5. **증상 상세 설명**: 입력한 증상을 상세히 표시
-6. **병원 추천**: 위치 및 진료과 기반 병원 추천 (분석 결과 페이지에 바로 표시)
-7. **병원 상세**: 병원 정보 및 지도 표시
-8. **예약 관리**: 병원 예약 생성 및 조회
-
-## 디자인
-
-프론트엔드 디자인은 [Wayopet](https://wayopet.com/)을 참고하여 제작되었습니다:
-- 깔끔하고 모던한 UI
-- 카드 기반 레이아웃
-- 부드러운 색상과 여백
-- 반응형 디자인
-
 ## 개발 참고사항
 
-- CORS는 모든 origin을 허용하도록 설정되어 있습니다 (개발 환경)
-- OpenAI API 키가 설정되지 않으면 Mock 데이터를 반환합니다
-- 카카오맵 API를 사용하려면 `hospital-detail.html`의 API 키를 설정해야 합니다
-- 백엔드 서버가 실행 중이어야 프론트엔드가 정상 작동합니다
+### 환경 변수
+- `GEMINI_API_KEY`: Google Gemini API 키 (필수)
+- 환경 변수는 `application.properties`에서 `${GEMINI_API_KEY:}` 형식으로 참조됩니다
+
+### CORS 설정
+- 개발 환경에서는 모든 origin을 허용하도록 설정되어 있습니다
+- `application.properties`에서 CORS 설정 확인 가능
+
+### 지도 서비스
+- **OpenStreetMap + Leaflet.js** 사용 (완전 무료, API 키 불필요)
+- Google Maps나 Kakao Map API 대신 사용
+- 병원 상세 페이지와 분석 결과 페이지에서 지도 표시
+
+### 로그 확인
+- Backend 로그: `tail -f backend.log` (스크립트 실행 시)
+- Frontend 로그: `tail -f frontend.log` (스크립트 실행 시)
+- IntelliJ에서 실행 시: Run 탭에서 로그 확인
+
+### 문제 해결
+
+**API 키가 적용되지 않는 경우:**
+1. IntelliJ에서 실행: Run Configuration의 Environment variables 확인
+2. 터미널에서 실행: `start-all.sh` 또는 `backend/run.sh`의 API 키 확인
+3. 백엔드 재시작 후 콘솔에서 "✅ Gemini API 키가 설정되었습니다." 메시지 확인
+
+**Backend가 시작되지 않는 경우:**
+- Java 17 이상 설치 확인: `java -version`
+- Maven 설치 확인: `mvn -version`
+- 포트 8080이 사용 중인지 확인
+
+**Frontend가 시작되지 않는 경우:**
+- Python 3 설치 확인: `python3 --version`
+- 포트 3000이 사용 중인지 확인
 
 ## 팀 구성
 
@@ -398,7 +324,3 @@ export KAKAO_MAP_API_KEY=발급받은-REST-API-키
 - **이상민**: 프론트엔드 담당
 - **최윤지**: 보고서 및 PPT 담당
 - **한승우**: AI 개발 담당
-
-## 라이선스
-
-이 프로젝트는 교육 목적으로 제작되었습니다.
