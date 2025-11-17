@@ -39,7 +39,7 @@
   "weightKg" : 4.0,
   "ownerName" : "테스트4",
   "ownerPhone" : "010-4567-8901",
-  "locationCity" : "서울특별시",
+  "locationCity" : "서울특별시 강남구 역삼동",
   "locationCountry" : "대한민국",
   "imagePath" : "/uploads/images/540a3540-1acc-4724-a7b1-ce997f6a9e5f.png"
 } ]

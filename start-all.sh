@@ -10,8 +10,25 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}🚀 Backend와 Frontend를 시작합니다...${NC}"
 
-# 환경 변수 설정 (여기에 발급받은 API 키를 입력하세요)
-export GEMINI_API_KEY=발급받은-API-키-여기에-입력
+# 환경 변수 로드 (우선순위: 1. 이미 설정된 환경변수, 2. .env 파일, 3. 없으면 경고)
+if [ -z "$GEMINI_API_KEY" ]; then
+    # .env 파일에서 로드 시도
+    if [ -f .env ]; then
+        # .env 파일에서 GEMINI_API_KEY 추출 (주석 제외)
+        export $(grep -v '^#' .env | grep GEMINI_API_KEY | xargs)
+        echo -e "${BLUE}📝 .env 파일에서 API 키를 로드했습니다.${NC}"
+    fi
+fi
+
+# API 키 확인
+if [ -z "$GEMINI_API_KEY" ] || [ "$GEMINI_API_KEY" = "발급받은-API-키-여기에-입력" ]; then
+    echo -e "${YELLOW}⚠️  경고: GEMINI_API_KEY가 설정되지 않았습니다!${NC}"
+    echo -e "${YELLOW}   다음 중 하나의 방법으로 설정하세요:${NC}"
+    echo -e "${YELLOW}   1. .env 파일 생성: cp .env.example .env (그리고 .env 파일 수정)${NC}"
+    echo -e "${YELLOW}   2. 환경변수로 설정: export GEMINI_API_KEY=your-key${NC}"
+    echo -e "${YELLOW}   3. IntelliJ Run Configuration에서 환경변수 설정 후 IntelliJ 실행 버튼 사용${NC}"
+    echo ""
+fi
 
 # Backend 실행 (백그라운드)
 echo -e "${BLUE}📦 Backend 시작 중...${NC}"
